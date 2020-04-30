@@ -1,0 +1,114 @@
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<th:block th:include="fragments/resources"></th:block>
+</head>
+
+<body data-ma-theme="blue">
+	<th:block th:insert="fragments/header"></th:block>
+	<th:block th:insert="fragments/menu"></th:block>
+	<section class="content">
+
+		<div class="card">
+			<div class="card-body">
+				<h4 class="card-title">Gestionar Pacientes</h4>
+				<div class="form-row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<a th:href="@{/pacientes/nuevo}" class="btn btn-primary">Nuevo
+								Paciente</a>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+		<div class="card">
+			<div class="card-body">
+				<div class="table-responsive">
+					<table id="idTablePacientes" class="table table-bordered">
+						<thead>
+							<tr>
+								<th>ID</th>
+								<th>Nombres</th>
+								<th>DNI</th>
+								<th>Historia Clínica</th>
+								<th>Opciones</th>
+							</tr>
+						</thead>
+						<tbody>
+							<th:block th:each="paciente :  ${listaPacientes}">
+								<tr>
+									<td th:text="${paciente.idPaciente}"></td>
+									<td th:text="${paciente.nombres} + ' ' + ${paciente.apellidos}"></td>
+									<td th:text="${paciente.dni}"></td>
+									<td th:text="${paciente.historiaClinica}"></td>
+									<td><a class="btn btn-primary"
+										th:href="@{/pacientes/editar/{id}(id=${paciente.idPaciente})}">
+											<i class="zmdi zmdi-edit zmdi-hc-fw"></i>
+									</a> <a class="btn btn-danger" href="#"
+										th:onclick="'deletePaciente(' + ${paciente.idPaciente} + ')'">
+											<i class="zmdi zmdi-delete zmdi-hc-fw"></i>
+									</a></td>
+
+								</tr>
+							</th:block>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$("#idTablePacientes").DataTable();
+			});
+
+			function deletePaciente(id) {
+				swal({
+					title : 'Estás Seguro de la Eliminación del Registro?',
+					text : '!No prodrás revertir esta acción!',
+					type : 'warning',
+					showCancelButton : true,
+					buttonsStyling : false,
+					confirmButtonClass : 'btn btn-danger',
+					confirmButtonText : 'Si, Eliminar',
+					cancelButtonClass : 'btn btn-secondary'
+				})
+						.then(
+								function(result) {
+									if (result.value) {
+										$
+												.ajax({
+													url : "/pacientes/eliminar/"
+															+ id,
+													type : "GET",
+													success : function() {
+														swal(
+																"Éxito!",
+																"Fue eliminado Exitosamente!",
+																"success")
+																.then(
+																		function(
+																				result) {
+																			window.location = "/pacientes";
+																		});
+													},
+													error : function() {
+														swal(
+																"Error!",
+																"Intente nuevamente",
+																"error");
+													},
+												})
+
+									}
+								});
+			}
+		</script>
+	</section>
+</body>
+</html>

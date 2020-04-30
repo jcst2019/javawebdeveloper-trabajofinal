@@ -1,0 +1,101 @@
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<th:block th:include="fragments/resources"></th:block>
+</head>
+
+<body data-ma-theme="blue">
+	<th:block th:insert="fragments/header"></th:block>
+	<th:block th:insert="fragments/menu"></th:block>
+	<section class="content">
+
+		<div class="card">
+			<div class="card-body">
+				<h4 class="card-title">Nuevo Doctor</h4>
+
+				<form id="id_form" th:action="@{/doctores/crear}" th:method="post"
+					th:object="${doctor}">
+
+					<div th:if="${error!=null}" th:text="${error}"
+						class="alert alert-danger"></div>
+
+					<div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
+						<ul class="list list--check" style="margin-block-end: 0;">
+							<li th:each="err : ${#fields.errors('*')}" th:text="${err}" />
+						</ul>
+					</div>
+
+					<div class="form-row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<input type="text" th:field="*{nombres}" class="form-control"
+									th:classappend="${#fields.hasErrors('nombres')} ? is-invalid"
+									placeholder="Nombres" maxlength="50" required=""
+									title="Registrar el Nombre del Doctor" />
+
+								<!-- 								<div th:if="${#fields.hasErrors('nombres')}" th:errors="*{nombres}" class="invalid-feedback"></div>							 -->
+								<i class="form-group__bar"></i>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<input type="text" th:field="*{apellidos}" class="form-control"
+									th:classappend="${#fields.hasErrors('apellidos')} ? is-invalid"
+									placeholder="Apellidos" maxlength="50" required=""
+									title="Registrar el Apellido del Doctor" /> <i
+									class="form-group__bar"></i>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<input type="text" th:field="*{dni}" class="form-control"
+									placeholder="Número de DNI" maxlength="10" required=""
+									title="Registrar el DNI del Doctor"/> <i
+									class="form-group__bar"></i>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<input type="text" th:field="*{cmp}" class="form-control"
+									placeholder="Código de Colegiatura" maxlength="10" required=""
+									title="Registrar el Número de Colegiatura del Doctor"/> <i
+									class="form-group__bar"></i>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>Especialidad</label> <select id="id_especialidad"
+									th:field="*{especialidad.idEspecialidad}" class="form-control"
+									title="Seleccionar la Especialidad del doctorr">
+									<option value="-1">Seleccione la Especialidad</option>
+									<!-- >option value="" disabled="" selected="">Selecciona la Especialidad</option-->
+									<option th:each="tipo : ${listaEspecialidad}"
+										th:value="${tipo.idEspecialidad}"
+										th:text="${tipo.nombreEspecialidad}" />
+								</select>
+							</div>
+						</div>
+						<div class="col-md-12">
+							<div class="form-group">
+								<button id="btn_registrar" type="submit" class="btn btn-primary">Registrar</button>
+								<a class="btn btn-danger" th:href="@{'/doctores'}">Cancelar</a>
+							</div>
+						</div>
+					</div>
+				</form>
+
+			</div>
+		</div>
+		<script type="text/javascript">
+			$('#btn_registrar').click(function() {
+				if ($('#id_especialidad').val().trim() === '-1') {
+					alert("Selecciona Una Especialidad");
+					return false;
+				}
+			});
+		</script>
+	</section>
+</body>
+</html>

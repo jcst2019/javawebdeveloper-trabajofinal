@@ -1,0 +1,80 @@
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<aside class="sidebar">
+	<div class="scrollbar-inner">
+		<div class="user">
+			<div class="user__info" data-toggle="dropdown">
+				<img class="user__img" th:src="@{/demo/img/profile-pics/8.jpg}"
+					alt="">
+				<div>
+					<div sec:authorize="hasRole('ROLE_DOCTOR')" class="user__name">
+						Bienvenido Doctor</div>
+					<div sec:authorize="hasRole('ROLE_ADMINISTRADOR')"
+						class="user__name">Bienvenido Administrador</div>
+					<div sec:authorize="hasRole('ROLE_DOCTOR')" class="user__email">doctor@mail.conm</div>
+					<div sec:authorize="hasRole('ROLE_ADMINISTRADOR')"
+						class="user__email">administrador@mail.conm</div>
+				</div>
+			</div>
+
+			<div class="dropdown-menu">
+				<a class="dropdown-item" href="">View Profile</a> <a
+					class="dropdown-item" href="">Settings</a> <a class="dropdown-item"
+					th:href="@{/logout}">Cerrar sesiÃ³n</a>
+			</div>
+		</div>
+
+		<ul class="navigation">
+			<li th:class="${module == 'doctores' ? 'navigation__sub' : ''}"><a
+				th:href="@{/doctores}"><i class="zmdi zmdi-home"></i> Inicio</a></li>
+			<li sec:authorize="hasRole('ROLE_ADMINISTRADOR')"
+				class="navigation__sub"
+				th:classappend="${module == 'doctores' ? 'navigation__sub' : ''}">
+				<!-- <a href=""><i class="zmdi zmdi-account-o"></i> --> <a href=""><i
+					class="zmdi zmdi-edit"></i> Mantenimiento</a>
+				<ul>
+					<li sec:authorize="hasRole('ROLE_ADMINISTRADOR')"
+						th:class="${module == 'especialidades' ? 'navigation__sub' : ''}"><a
+						th:href="@{/especialidades}">Especialidades</a></li>
+					<li sec:authorize="hasRole('ROLE_ADMINISTRADOR')"
+						th:class="${module == 'doctores' ? 'navigation__sub' : ''}"><a
+						th:href="@{/doctores}">Médicos</a></li>
+					<li sec:authorize="hasRole('ROLE_ADMINISTRADOR')"
+						th:class="${module == 'pacientes' ? 'navigation__sub' : ''}"><a
+						th:href="@{/pacientes}">Pacientes</a></li>
+				</ul>
+			</li>
+			<li sec:authorize="hasRole('DOCTOR')" class="navigation__sub"
+				th:classappend="${module == 'doctores' ? 'navigation__sub' : ''}"><a
+				href=""><i class="zmdi zmdi-account-add"></i> Consulta Médica</a>
+				<ul>
+					<li sec:authorize="hasRole('DOCTOR')"
+						th:class="${module == 'consultamedica' ? 'navigation__sub' : ''}"><a
+						th:href="@{/consultamedica}">Generar Consulta Médica</a></li>
+					<li sec:authorize="hasRole('DOCTOR')"
+						th:class="${module == 'consultamedicapaciente' ? 'navigation__sub' : ''}"><a
+						th:href="@{/consultamedicapaciente}">Mostrar Consulta Médica
+							por Paciente</a></li>
+				</ul></li>
+			<li class="navigation__sub"
+				th:classappend="${module == 'doctores' ? 'navigation__sub' : ''}">
+				<!-- <a href=""><i class="zmdi zmdi-account-o"></i> --> <a href=""><i
+					class="zmdi zmdi-collection-text"></i> Reportes</a>
+				<ul>
+					<li sec:authorize="hasRole('DOCTOR')"
+						th:class="${module == 'doctores' ? 'navigation__sub' : ''}"><a
+						th:href="@{/reportes/listarhc}">Historia Clínica</a></li>
+					<li sec:authorize="hasRole('ROLE_ADMINISTRADOR')"
+						th:class="${module == 'reportes' ? 'navigation__sub' : ''}"><a
+						th:href="@{/reportes/listar}">Médicos por Especialidad</a></li>
+				</ul>
+			</li>
+			<li th:class="${module == 'cerrar_sesion' ? 'navigation__sub' : ''}"><a
+				th:href="@{/logout}"><i class="zmdi zmdi-power-setting"></i>
+					Cerrar Sesión</a></li>
+		</ul>
+	</div>
+</aside>

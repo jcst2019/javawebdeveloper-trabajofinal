@@ -1,0 +1,50 @@
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<th:block th:include="fragments/resources"></th:block>
+</head>
+
+<body data-ma-theme="blue">
+	<th:block th:insert="fragments/header"></th:block>
+	<th:block th:insert="fragments/menu"></th:block>
+	<section class="content">
+
+		<div class="card">
+			<div class="card-body">
+				<h4 class="card-title">Reporte Médicos Por Especialidades</h4>
+			</div>
+		</div>
+
+		<div class="card">
+			<div class="card-body">
+				<div class="table-responsive">
+					<table id="idTableEspecialidades" class="table table-bordered">
+						<thead>
+							<tr>
+								<th>ID</th>
+								<th>Especialidad</th>
+								<th>Opciones</th>
+							</tr>
+						</thead>
+						<tbody>
+							<th:block th:each="especialidad :  ${listaEspecialidades}">
+								<tr>
+									<td th:text="${especialidad.idEspecialidad}"></td>
+									<td th:text="${especialidad.nombreEspecialidad}"></td>
+									<td><a class="btn btn-primary"
+										th:href="@{/reportes/reporte01/{id}(id=${especialidad.idEspecialidad})}">
+											<i class="zmdi zmdi-grid"></i> Consultar Reporte
+									</a></td>
+								</tr>
+							</th:block>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+
+	</section>
+</body>
+</html>
